@@ -2,12 +2,34 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    protected $validationRules = [
+        'title',
+        'slug',
+        'description'
+    ];
+
+    public function getValidation($value)
+    {
+        return
+            [
+                'title'     => 'required|max:100',
+                'slug' => [
+                    'required',
+                    Rule::unique('posts')->ignore($value),
+                    'max:100'
+                ],
+                'content'   => 'required'
+            ];
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -29,6 +51,8 @@ class PostController extends Controller
     public function create()
     {
         //
+
+        return view('admin.posts.create');
     }
 
     /**
@@ -37,9 +61,14 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Post $post)
     {
         //
+
+        $request->validate($this->getValidation(null));
+        $post = Post::create($request->all());
+
+        return redirect()->route('admin.posts.show', $post->slug);
     }
 
     /**
@@ -51,6 +80,8 @@ class PostController extends Controller
     public function show(Post $post)
     {
         //
+
+        return view('admin.posts.show', compact('post'));
     }
 
     /**
@@ -62,6 +93,8 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         //
+
+        return view('admin.posts.edit', compact('post'));
     }
 
     /**
@@ -74,6 +107,11 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         //
+
+        $request->validate($this->getValidation($post));
+        $post->update($request->all());
+
+        return redirect()->route('admin.posts.show', $post->slug);
     }
 
     /**
@@ -85,5 +123,9 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+
+        $post->delete();
+
+        return redirect()->route('admin.posts.index');
     }
 }
