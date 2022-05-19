@@ -4,9 +4,11 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+const { default: Axios } = require("axios");
 
-window.Vue = require('vue');
+require("./bootstrap");
+
+window.Vue = require("vue");
 
 /**
  * The following block of code may be used to automatically register your
@@ -19,7 +21,10 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component(
+    "example-component",
+    require("./components/ExampleComponent.vue").default
+);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -28,5 +33,41 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  */
 
 const app = new Vue({
-    el: '#app',
+    el: "#app",
 });
+
+const btnSlugger = document.querySelector("#btn-slugger");
+if (btnSlugger) {
+    btnSlugger.addEventListener("click", function () {
+        const eleSlug = document.querySelector("#slug");
+        const title = document.querySelector("#title").value;
+
+        Axios.post("/admin/slugger", {
+            originalStr: title,
+        }).then(function (response) {
+            eleSlug.value = response.data.slug;
+        });
+    });
+}
+
+const confirmationOverlay = document.querySelector("#confirmation-overlay");
+const confirmationForm = document.querySelector(".delete-post");
+if (confirmationOverlay) {
+    document.querySelectorAll(".btn-delete").forEach((button) => {
+        button.addEventListener("click", function () {
+            const id = this.closest("tr").dataset.id;
+            const strAction = confirmationForm.dataset.base.replace(
+                "*****",
+                id
+            );
+            confirmationForm.action = strAction;
+            confirmationOverlay.classList.remove("d-none");
+        });
+    });
+
+    const btnNo = document.querySelector("#btn-no");
+    btnNo.addEventListener("click", function () {
+        confirmationForm.action = "";
+        confirmationOverlay.classList.add("d-none");
+    });
+}

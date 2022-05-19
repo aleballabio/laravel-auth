@@ -8,6 +8,8 @@
     <title>{{ config('app.name', 'BoolPress') }} | @yield('pageTitle')</title>
 
     <script src="{{ asset('js/app.js') }}" defer></script>
+
+    {{-- Attribute defer parse the script at the end of the full parsing. --}}
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 

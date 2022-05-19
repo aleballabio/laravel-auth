@@ -22,13 +22,12 @@ class Post extends Model
 
     static public function generateSlug($originalStr)
     {
-        $baseSlug = Str::of($originalStr)->slug('-');
+        $baseSlug = Str::of($originalStr)->slug('-')->__toString();
         $slug = $baseSlug;
-
-        $_index = 1;
+        $_i = 1;
         while (self::where('slug', $slug)->first()) {
-            $slug = "$baseSlug-$_index";
-            $_index++;
+            $slug = "$baseSlug-$_i";
+            $_i++;
         }
         return $slug;
     }

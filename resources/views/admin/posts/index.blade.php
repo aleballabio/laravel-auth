@@ -53,7 +53,7 @@
                 <h1>Sei sicuro di voler eliminare?</h1>
                 <div class="d-flex justify-content-center">
                     <button id="btn-no" class="btn btn-primary me-3">NO</button>
-                    <form method="POST" data-base="{{ route('admin.posts.destroy', '*****') }}">
+                    <form method="POST" class="delete-post" data-base="{{ route('admin.posts.destroy', '*****') }}">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger">SI</button>
