@@ -12,12 +12,12 @@
                 <table class="table table-dark table-hover">
                     <thead>
                         <tr>
-                        <th class="text-center" scope="col">#</th>
-                        <th class="text-center" scope="col">Title</th>
-                        <th class="text-center" scope="col">Slug</th>
-                        <th class="text-center" scope="col">Created At</th>
-                        <th class="text-center" scope="col">Updated At</th>
-                        <th class="text-center" scope="col" colspan="3">Actions</th>
+                            <th class="text-center" scope="col">#</th>
+                            <th class="text-center" scope="col">Title</th>
+                            <th class="text-center" scope="col">Slug</th>
+                            <th class="text-center" scope="col">Created At</th>
+                            <th class="text-center" scope="col">Updated At</th>
+                            <th class="text-center" scope="col" colspan="3">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -29,13 +29,15 @@
                                 <td>{{ date('d/m/Y', strtotime($post->created_at)) }}</td>
                                 <td>{{ date('d/m/Y', strtotime($post->updated_at)) }}</td>
                                 <td>
-                                    <a class="btn btn-primary" href="{{ route('admin.posts.show', $post->id) }}">View</a>
+                                    <a class="btn btn-primary"
+                                        href="{{ route('admin.posts.show', $post->slug) }}">View</a>
                                 </td>
                                 <td>
-                                    <a class="btn btn-primary" href="{{ route('admin.posts.edit', $post->id) }}">Edit</a>
+                                    <a class="btn btn-primary"
+                                        href="{{ route('admin.posts.edit', $post->slug) }}">Edit</a>
                                 </td>
                                 <td class="text-center">
-                                    <button class="btn btn-danger btn-delete" data-id="{{ $post->id }}">Delete</button>
+                                    <button class="btn btn-danger btn-delete" data-id="{{ $post->slug }}">Delete</button>
                                 </td>
                             </tr>
                         @endforeach
